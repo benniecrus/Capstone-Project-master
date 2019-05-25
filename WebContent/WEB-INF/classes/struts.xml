@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+   "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+   "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<constant name="struts.multipart.maxSize" value="204800000" />
+	<!-- 204800000 = 200MB -->
+	<package name="default" extends="hibernate-default">
+	
+	<result-types>
+			<result-type name="imageResult" class="com.action.UserImageResult" />
+			<result-type name="curriculumResult" class="com.action.CurriculumPdfResult" />
+			<result-type name="cvResult" class="com.action.CvPdfResult" />
+	</result-types>
+		
+	<interceptors>
+		<interceptor name="trainerInterceptor"
+		class="com.action.TrainerInterceptor"/>
+	</interceptors>
+		
+		<global-results>
+			<result name="error">/error.jsp</result>
+		</global-results>
+		
+	<action name="ImageAction" class="com.action.ImageAction">
+			<result name="success" type="imageResult">
+			</result>
+		</action>
+		
+		<action name="Display" class="com.action.DisplayAction">
+			<result>/display.jsp</result>
+		</action>
+		
+		<action name="curriculumImageAction" class="com.action.ImageAction">
+			<result name="success" type="curriculumResult"></result>
+		</action>
+		
+		<action name="cvImageAction" class="com.action.ImageAction">
+			<result name="success" type="cvResult"></result>
+		</action>
+	<action name="sendMail" class="com.action.EmailAction" method="execute">
+		<result name="success">/forgetPassword.jsp</result>
+	</action>
+	<action name="adminValidCourse" class="com.action.EmailAction" method="adminValidCourse">
+		<result name="success" type="redirectAction">admin/pages/reviewCourse</result>
+	</action>
+	<action name="adminValidTrainer" class="com.action.EmailAction" method="adminValidTrainer">
+		<result name="success" type="redirectAction">admin/pages/reviewTrainer</result>
+	</action>
+	<action name="admin" class="com.action.AdminAction" method="admin">
+			<result name="success" type="redirectAction">admin/pages/indexAdmin</result>
+			<result name="error" type="redirect"><param name="location">/admin/pages/login.jsp</param ></result>
+	</action>
+	
+	<action name="adminLogin" class="com.action.AdminAction" method="login">
+			<result name="success" type="redirectAction">admin/pages/indexAdmin</result>
+			<result name="error">/admin/pages/login.jsp</result>
+	</action>
+	
+	<action name="adminLogout" class="com.action.AdminAction" method="logout">
+			<result name="success">/admin/pages/login.jsp</result>
+	</action>
+	
+	<action name="indexAdmin" class="com.action.AdminAction" method="indexAdmin">
+			<result name="success">/admin/pages/index.jsp</result>
+	</action>
+		
+	<action name="showadmin" class="com.action.AdminAction" method="showAdmin">
+			<result name="success">/admin/pages/listadmin.jsp</result>
+	</action>
+	<action name="delAdmin" class="com.action.AdminAction" method="delAdmin">
+			<result name="success">/admin/pages/listadmin.jsp</result>
+	</action>
+	<action name="addAdmin" class="com.action.AdminAction" method="addAdmin">
+			<result name="success">/admin/pages/listadmin.jsp</result>
+	</action>
+	<action name="updateAdmin" class="com.action.AdminAction" method="updateAdmin">
+			<result name="success">/admin/pages/listadmin.jsp</result>
+	</action>
+	
+	<action name="showLearner" class="com.action.LearnerAction" method="showLearner">
+			<result name="success">/admin/pages/listuser.jsp</result>
+	</action>
+	<action name="updateLearner" class="com.action.LearnerAction" method="updateLearner">
+			<result name="success">/admin/pages/listuser.jsp</result>
+	</action>
+	
+	<action name="updateLearnerProfile" class="com.action.LearnerAction" method="updateLearnerProfile">
+		<result name="success" type="redirectAction">getLearnerProfile</result>
+	</action>
+	
+	<action name="updateTrainerProfile" class="com.action.TrainerAction" method="updateTrainerProfile">
+			<result name="success" type="redirectAction">getTrainerProfile</result>
+	</action>
+	
+	<action name="updateAvatar" class="com.action.TrainerAction" method="updateAvatar">
+		<result name="success" type="redirectAction">getTrainerProfile</result>
+	</action>
+	
+	<action name="updateLearnerAvatar" class="com.action.LearnerAction" method="updateLearnerAvatar">
+		<result name="success" type="redirectAction">getLearnerProfile</result>
+	</action>
+	
+	<action name="delLearner" class="com.action.LearnerAction" method="delLearner">
+			<result name="success">/admin/pages/listuser.jsp</result>
+	</action>
+	<action name="blockLearner" class="com.action.LearnerAction" method="blockLearner">
+			<result name="success">/admin/pages/listuser.jsp</result>
+	</action>
+	<action name="unblockLearner" class="com.action.LearnerAction" method="unblockLearner">
+			<result name="success">/admin/pages/listuser.jsp</result>
+	</action>
+	
+	<action name="showTrainer" class="com.action.TrainerAction" method="showTrainer">
+			<result name="success">/admin/pages/listtrainer.jsp</result>
+	</action>
+	<action name="updateTrainer" class="com.action.TrainerAction" method="updateTrainer">
+			<result name="success">/admin/pages/listtrainer.jsp</result>
+	</action>
+	<action name="blockTrainer" class="com.action.TrainerAction" method="blockTrainer">
+			<result name="success">/admin/pages/listtrainer.jsp</result>
+	</action>
+	<action name="unblockTrainer" class="com.action.TrainerAction" method="unblockTrainer">
+			<result name="success">/admin/pages/listtrainer.jsp</result>
+	</action>
+	<action name="reviewTrainer" class="com.action.TrainerAction" method="reviewTrainer">
+			<result name="success">/admin/pages/reviewtrainer.jsp</result>
+	</action>
+	<action name="validateTrainer" class="com.action.TrainerAction" method="validTrainer">
+			<result name="success" type="redirectAction">
+				<param name="actionName">adminValidTrainer</param>
+				<param name="to">${userName1}</param>
+				<param name="check">${check}</param>
+			</result>
+	</action>
+	<action name="rejectTrainer" class="com.action.TrainerAction" method="rejectTrainer">
+			<result name="success" type="redirectAction">
+				<param name="actionName">adminValidTrainer</param>
+				<param name="to">${userName1}</param>
+				<param name="check">${check}</param>
+			</result>
+	</action>
+	
+	<action name="reviewDocument" class="com.action.DocumentAction" method="reviewDocument">
+			<result name="success">/admin/pages/listdocument.jsp</result>
+	</action>
+	<action name="validDocument" class="com.action.DocumentAction" method="validDocument">
+			<result name="success">/admin/pages/listdocument.jsp</result>
+	</action>
+	<action name="rejectDocument" class="com.action.DocumentAction" method="rejectDocument">
+			<result name="success">/admin/pages/listdocument.jsp</result>
+	</action>
+	
+	<action name="viewCourse" class="com.action.CourseAction" method="initCourse">
+			<result name="success">/admin/pages/listcourse.jsp</result>
+	</action>
+	<action name="reviewCourse" class="com.action.CourseAction" method="initCourse">
+			<result name="success">/admin/pages/reviewcourse.jsp</result>
+	</action>
+	<action name="validCourse" class="com.action.CourseAction" method="validCourse">
+			<result name="success" type="redirectAction">
+				<param name="actionName">adminValidCourse</param>
+				<param name="course">${courseName}</param>
+				<param name="to">${userName}</param>
+				<param name="check">${check}</param>
+			</result>
+	</action>
+	<action name="rejectCourse" class="com.action.CourseAction" method="rejectCourse">
+			<result name="success" type="redirectAction">
+				<param name="actionName">adminValidCourse</param>
+				<param name="course">${courseName}</param>
+				<param name="to">${userName}</param>
+				<param name="check">${check}</param>
+			</result>
+	</action>
+	
+	<action name="getCourses" class="com.action.TrainerAction" method="publicTrainerProfile">
+			<result name="success">/admin/pages/courseoftrainer.jsp</result>
+	</action>
+	<action name="image" class="com.action.TrainerAction" method="convertBinaryToImage">
+			<result name="success">/ProfileTrainer.jsp</result>
+	</action>
+		
+	
+	<action name="login" class="com.action.UserLogin" method="execute">
+		<result name="success" type="redirectAction">initIndex</result>
+		<result name="error">/index.jsp</result>
+	</action>
+	
+	<action name="getProfile" class="com.action.TrainerAction" method="getTrainerByUser">
+			<result name="success">/showJob.jsp</result>
+	</action>
+	
+	<action name="getUserProfile" class="com.action.UserAction" method="getUserProfile">
+		<result name="trainer">/ProfileTrainer.jsp</result>
+		<result name="learner">/ProfileLearner.jsp</result>
+	</action>
+	
+	<action name="logout" class="com.action.UserLogin" method="logout">
+		<result name="success">/redirect.jsp</result>
+	</action>
+	
+	
+	
+	<action name="initSignUp" class="com.action.CommonAction" method="initSignUp">
+		<result name="success">/SignUp.jsp</result>
+	</action>
+	
+	<action name="initAddCourse" class="com.action.CourseAction" method="initAddCourse">
+		<result name="success">/Course.jsp</result>
+	</action>
+	
+	<action name="initIndex" class="com.action.CommonAction" method="initIndex">
+		<result name="success">/index.jsp</result>
+	</action>
+	
+	<action name="initCourse" class="com.action.CourseAction" method="initCourse">
+		<result name="success">/Category.jsp</result>
+	</action>
+	
+	<action name="initTrainer" class="com.action.TrainerAction" method="initTrainer">
+		<result name="success">/trainerList.jsp</result>
+	</action>
+	
+	<action name="initCourseManagement" class="com.action.CourseAction" method="initCourseManagement">
+		<result name="success">/courseManagement.jsp</result>
+	</action>
+	
+	<action name="initEditCourse" class="com.action.CourseAction" method="courseDetail">
+		<result name="success">/EditCourse.jsp</result>
+	</action>
+	
+	<action name="getCourseByCategoryId" class="com.action.CourseAction" method="getCourseByCategoryId">
+		<result name="success">/Category.jsp</result>
+	</action>
+	
+	<action name="courseDetail" class="com.action.CourseAction" method="courseDetail">
+		<result name="success">/CourseDetail.jsp</result>
+	</action>
+	
+	
+	<action name="addTrainer" class="com.action.TrainerAction" method="addTrainer">
+		<result name="success" type="redirectAction">
+			<param name="actionName">login</param>
+			<param name="userName">${userName}</param>
+			<param name="password">${password}</param>
+		</result>
+		<result name="error"  type="redirectAction">/initSignUp</result>
+	</action>
+	
+	<action name="addLearner" class="com.action.LearnerAction" method="addLearner">
+		<result name="success" type="redirectAction">
+			<param name="actionName">login</param>
+			<param name="userName">${userName}</param>
+			<param name="password">${password}</param>
+		</result>
+		<result name="error" type="redirectAction">/initSignUp</result>
+	</action>
+	
+	
+	
+	<action name="getTrainerProfile" class="com.action.TrainerAction" method="getProfile">
+		<result name="success">/ProfileTrainer.jsp</result>
+	</action>
+	
+	<action name="getLearnerProfile" class="com.action.LearnerAction" method="getLearnerProfile">
+	<result name="success">/ProfileLearner.jsp</result>
+	</action>
+	
+	<action name="publicTrainerProfile" class="com.action.TrainerAction" method="publicTrainerProfile">
+		<result name="success">/PublicTrainer.jsp</result>
+	</action>
+	
+	<action name="changeTrainerPassword" class="com.action.UserAction" method="changePassword">
+		<result name="success" type="redirectAction">getTrainerProfile</result>
+	</action>
+	
+	<action name="test" class="test.TestAction" method="execute">
+		<result name="success">/display.jsp</result>
+		<result name="input">/Test.jsp</result>
+	</action>
+	
+	<action name="addNewCourse" class="com.action.CourseAction" method="addNewCourse">
+		<result name="success" type="redirectAction">initCourseManagement</result>
+		<result name="error" type="redirectAction">initAddCourse</result>
+	</action>
+	
+	<action name="addNewHistory" class="com.action.HistoryAction" method="addNewHistory">
+		<result name="success">/success.jsp</result>
+	</action>
+	
+	
+	
+	<action name="addNewComment" class="com.action.CommentAction" method="addNewComment">
+		<result name="success" type="redirectAction">
+			<param name="actionName">courseDetail</param>
+			<param name="courseId">${courseId}</param>
+		</result>
+	</action>
+	
+	<action name="saveCourse" class="com.action.CourseAction" method="saveCourse">
+		<result name="success" type="redirectAction">
+			<param name="actionName">courseDetail</param>
+			<param name="courseId">${courseId}</param>
+		</result>
+	</action>
+	
+	<action name="deleteCourse" class="com.action.CourseAction" method="deleteCourse">
+		<result name="success" type="redirectAction">initCourseManagement</result>
+	</action>
+	<action name="admindeleteCourse" class="com.action.CourseAction" method="deleteCourse">
+		<result name="success" type="redirectAction">admin/pages/viewCourse</result>
+	</action>
+	<action name="editCourse" class="com.action.CourseAction" method="editCourse">
+		<result name="success" type="redirectAction">initCourseManagement</result>
+	</action>
+	
+	<action name="changeLearnerPassword" class="com.action.UserAction" method="changePassword">
+		<result name="success" type="redirectAction">getLearnerProfile</result>
+	</action>
+	
+	<action name="publicLearner" class="com.action.LearnerAction" method="publicLearner">
+		<result name="success">/PublicLearner.jsp</result>
+	</action>
+	
+	<action name="addNewCourseRate" class="com.action.CourseRateAction" method="addNewCourseRate">
+		<result name="success" type="redirectAction">
+			<param name="actionName">courseDetail</param>
+			<param name="courseId">${courseId}</param>
+		</result>
+		<result name="error">/error.jsp</result>
+	</action>
+	
+	<action name="trainerRate" class="com.action.TrainerRateAction" method="addNewTrainerRate">
+		<result name="success" type="redirectAction">
+			<param name="actionName">publicTrainerProfile</param>
+			<param name="trainerid">${trainerid}</param>
+		</result>
+	</action>
+	
+	<action name="searchCourse" class="com.action.CourseAction" method="searchCourse">
+		<result name="success">/search.jsp</result>
+	</action>
+	
+	<action name="getCourseByTrainerId" class="com.action.CourseAction" method="getCourseByTrainerId">
+		<result name="success">/Category.jsp</result>
+	</action>
+	
+	<action name="viewStatistic" class="com.action.CourseAction" method="viewStatistic">
+		<result name="success">/Statistic.jsp</result>
+	</action>
+	
+	<action name="getTotalViewCategory" class="com.action.CategoryAction" method="getTotalViewCategory">
+		<result name="success">/success.jsp</result>
+	</action>
+	
+	<action name="sendMessage" class="com.action.MessageAction" method="addNewMessage">
+		<result name="success" type="redirectAction">getMessage</result>
+	</action>
+	
+	<action name="getMessage" class="com.action.MessageAction" method="getMessage">
+		<result name="success">/mess.jsp</result>
+	</action>
+	
+	<action name="addDocument" class="com.action.DocumentAction" method="addDocument">
+		<result name="success" type="redirectAction">getTrainerProfile</result>
+	</action>
+	
+	<action name="updateCourse" class="com.action.CourseAction" method="updateCourse">
+		<result name="success" type="redirectAction">initCourseManagement</result>
+	</action>
+	
+	</package>
+	
+	<package name="document" extends="hibernate-default" namespace="/document">
+		<result-types>
+			<result-type name="documentImageResult"
+				class="com.action.DocumentImageResult" />
+		</result-types>
+		
+		<action name="displayDocument" class="com.action.ImageAction">
+		<result name="success" type="documentImageResult"></result>
+		</action>
+		
+	</package>
+	
+	<package name="course" extends="hibernate-default" namespace="/course">
+		<result-types>
+			<result-type name="courseImageResult" class="com.action.CourseImageResult"></result-type>
+		</result-types>
+		
+		<action name="displayCourseImage" class="com.action.ImageAction">
+			<result name="success" type="courseImageResult"></result>
+		</action>
+		
+	</package>
+	
+	
+</struts>

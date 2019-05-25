@@ -1,0 +1,90 @@
+
+
+/* here you can put your own css to customize and override the theme */
+
+/* signin head */
+    
+ .dropdown:hover .dropdown-menu {
+     display: block;
+ }
+
+
+.dropdown-menu {
+     font-size: 15px;
+ }
+
+
+/* header search */
+
+#search-form {
+    padding-top: 19px;
+    float: right;
+}
+#search-form form {
+	position:relative;
+	
+	padding-left:49px;
+	border-left:1px solid #ccc;
+	font-family: FontAwesome;
+}
+#search-form form:before {
+	content: "\f002";
+	position:absolute;
+	left:29px;
+
+
+	font-size:15px;
+	color: #e6400c;
+}
+
+#search-form input {
+	width: 150px;
+	margin:0;
+	
+	text-transform:none;
+	font-family: 'Roboto', sans-serif;
+	font-weight:300;
+	line-height:20px;
+	font-size: 13px;
+	color: #999;	
+	background: none;
+	border: 0;
+	box-shadow: none;	 
+	transition: all 0.3s ease-in-out; 
+	-webkit-transition: all 0.3s ease-in-out;
+}
+#search-form input:focus {
+	width: 270px;
+}
+
+input[type="text"]:focus,
+input[type="color"]:focus {
+	outline: 0;
+	box-shadow: none;
+	color:#666;
+	border-color:#ccc;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+	.logo a {font-size:22px;}
+#search-form input:focus {width:42px;}
+    
+    
+
+/* search course */   
+	
+
+	
+	
+    
+    #google {
+        position: absolute;
+        left: 50%;
+    }
+
+	
+	
+    
+	
+	
+
